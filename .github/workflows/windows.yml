@@ -1,0 +1,56 @@
+name: Windows CI/CD
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: windows-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+# No release/* publisher; a verified main-only manual PUBLISH gate is required.
+jobs:
+  windows:
+    permissions:
+      contents: read
+    uses: pgextwin/build/.github/workflows/build-extension.yml@3573ee1c220c04b83b4ad12c5d489288255bdaf0
+    with:
+      extension_config_path: config/extension.json
+      test_contract_path: config/test-contract.json
+
+  # Stable branch-protection context independent of PG14/PG19 matrix churn.
+  # This result requires the ENTIRE maintained-major reusable Windows build.
+  # No Release/dispatch/publish operations occur in this job.
+  windows_required:
+    name: Windows required summary
+    if: ${{ always() && !startsWith(github.ref, 'refs/heads/release/') }}
+    needs: windows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Test required Windows aggregate allow/deny contract
+        run: python3 tests/test_required_windows_summary.py
+      - name: Require full maintained-PG Windows matrix success
+        env:
+          WINDOWS_MATRIX_RESULT: ${{ needs.windows.result }}
+        run: python3 scripts/required_windows_summary.py
+
+  candidate_report:
+    name: Verify candidate Windows matrix and artifacts
+    if: ${{ always() && github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/auto-candidate/') }}
+    needs: windows
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    uses: pgextwin/build/.github/workflows/verify-candidate.yml@ecf84241c1c4cd99fab3f964cb309f9c6e2a01f8
+    with:
+      matrix_result: ${{ needs.windows.result }}

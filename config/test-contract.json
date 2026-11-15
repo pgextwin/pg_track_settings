@@ -1,0 +1,44 @@
+{
+  "contractVersion": 2,
+  "extension": "pg_track_settings",
+  "smokeTest": {
+    "script": "windows/ci/smoke-test.ps1"
+  },
+  "runtimeRequirements": {
+    "extensionCreation": "required",
+    "preload": "none",
+    "backgroundWorker": false,
+    "clientExecutable": {
+      "required": false,
+      "packagePaths": []
+    }
+  },
+  "testSetup": {
+    "preload": "none",
+    "backgroundWorker": false,
+    "settings": []
+  },
+  "coverage": {
+    "createExtension": "covered",
+    "backgroundWorker": "not-applicable",
+    "clientExecutable": "not-applicable",
+    "serverLogAssertions": "not-applicable",
+    "upgrade": "not-covered"
+  },
+  "functionalScenarios": [
+    {
+      "id": "snapshot-and-settings-query",
+      "description": "Creates pg_track_settings, takes a settings snapshot via pg_track_settings_snapshot(), and verifies pg_track_settings() and pg_track_reboot_log() return expected records.",
+      "evidence": [
+        "sql-result"
+      ]
+    },
+    {
+      "id": "track-setting-change-diff-and-log",
+      "description": "Changes work_mem between two snapshots and verifies pg_track_settings_log() and pg_track_settings_diff() report the recorded change accurately.",
+      "evidence": [
+        "sql-result"
+      ]
+    }
+  ]
+}

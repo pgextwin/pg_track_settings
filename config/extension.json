@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "name": "pg_track_settings",
+  "upstream": {
+    "repository": "rjuju/pg_track_settings",
+    "ref": "2.1.2",
+    "version": "2.1.2",
+    "commit": "36a23f3c6d684c40140da1a24b1c3ee0e707b77a"
+  },
+  "postgresql": {
+    "majors": [
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "windows": {
+    "architecture": "x64"
+  },
+  "license": {
+    "verifyAgainstUpstream": true,
+    "upstreamPath": "LICENSE"
+  }
+}
