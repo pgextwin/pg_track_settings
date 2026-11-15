@@ -26,9 +26,9 @@ jobs:
     if: github.event_name == 'schedule'
     permissions:
       contents: read
-    uses: pgextwin/build/.github/workflows/operator-update-auto.yml@3567368d30763fd496b0e70e48d49102a4590895
+    uses: pgextwin/build/.github/workflows/operator-update-auto.yml@ecc2850520dd286ae92984abee41e89ecef44ae1
     with:
-      detector_sha: 3567368d30763fd496b0e70e48d49102a4590895
+      detector_sha: ecc2850520dd286ae92984abee41e89ecef44ae1
 
   watch_candidate:
     name: Explicit upstream check and Issue reconciliation
