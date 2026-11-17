@@ -18,16 +18,8 @@ concurrency:
 jobs:
   signed_main_source:
     name: Authenticate owner Issue 1 and attest true protected main (NONPUBLISHING)
-    if: >-
-      ${{ github.repository == 'pgextwin/pg_track_settings' &&
-          github.event_name == 'issue_comment' &&
-          github.ref == 'refs/heads/main' &&
-          github.event.issue.number == 1 &&
-          !github.event.issue.pull_request &&
-          github.event.comment.body == '/pgextwin sign-main' &&
-          github.actor == 'ShutenOishi' &&
-          github.triggering_actor == 'ShutenOishi' &&
-          github.run_attempt == 1 }}
+    # Owner, issue, main, attempt and fleet identity are authenticated centrally.
+    if: ${{ github.event_name == 'issue_comment' }}
     permissions:
       contents: read
       issues: read
@@ -35,7 +27,7 @@ jobs:
       id-token: write
       attestations: write
       artifact-metadata: write
-    uses: pgextwin/build/.github/workflows/chat-signed-main-source.yml@d8bb7252609020e5f689afcbd34dd3b74677aed8
+    uses: pgextwin/build/.github/workflows/chat-signed-main-source.yml@834f9ce912f2e5ce12834b77a9bd0ad7064554f9
     with:
       request_issue: 1
       extension_config_path: config/extension.json
