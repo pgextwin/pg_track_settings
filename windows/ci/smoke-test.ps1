@@ -13,7 +13,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-if ($PostgreSqlMajor -notin @(15, 16, 17, 18)) {
+if ($PostgreSqlMajor -notin @(15, 16, 17, 18, 19)) {
     throw "Unsupported PostgreSQL major for pg_track_settings: $PostgreSqlMajor"
 }
 
