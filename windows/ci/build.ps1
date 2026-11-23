@@ -46,7 +46,7 @@ if ($sqlFiles.Count -ne 12) {
 
 $pgConfig = Join-Path $PgRoot "bin\pg_config.exe"
 $pgVersionText = (& $pgConfig --version).Trim()
-if ($LASTEXITCODE -ne 0 -or $pgVersionText -notmatch '^PostgreSQL\s+(15|16|17|18)(?:\.|\s)') {
+if ($LASTEXITCODE -ne 0 -or $pgVersionText -notmatch '^PostgreSQL\s+(15|16|17|18|19)(?:\.|\s)') {
     throw "Unsupported or unrecognized PostgreSQL version from pg_config: '$pgVersionText'"
 }
 
